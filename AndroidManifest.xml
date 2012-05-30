@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="holt.bowmer"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="7" />
+    
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <activity
+            android:name=".FoodTrucksActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="twitter-OAUTH-Truckville" android:host="callback" />
+            </intent-filter>
+            
+        </activity>
+        
+        <activity
+            android:name=".CheckInPage"
+            android:label="Check In"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity 
+            android:name=".FindTrucksPage"
+            android:label="Find Trucks"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".BadgesPage"
+            android:label="Badges"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".FavoritesPage"
+            android:label="Favorite Trucks"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".LoginPage"
+            android:label="Tweeter"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" >
+                <category android:name="android.intent.category.LAUNCHER" >
+                </category>
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" >
+                    <category android:name="android.intent.category.DEFAULT" >
+                    <category android:name="android.intent.category.BROWSABLE" >
+                    <data android:host="tweeter" android:scheme="callback" >
+                    </data>
+                    </category>
+                    </category></action></intent-filter></action></intent-filter>
+        </activity>
+        <activity
+            android:name=".TruckFeed"
+            android:label="Trucks"
+            android:screenOrientation="portrait" >
+        </activity>
+        
+    </application>
+
+</manifest>

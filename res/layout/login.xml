@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/top_control_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+         <Button
+             android:id="@+id/loginBack"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Back" />
+
+         <TextView
+             android:id="@+id/textView1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+             android:layout_alignParentTop="true"
+             android:layout_toRightOf="@+id/loginBack"
+             android:gravity="center_horizontal"
+             android:text="Log In"
+             android:textAppearance="?android:attr/textAppearanceLarge" />
+        </RelativeLayout>
+
+    <Button
+        android:id="@+id/logoutbutton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:onClick="logout"
+        android:text="Log Out" />
+
+    <Button
+        android:id="@+id/loginbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/top_control_bar"
+        android:text="Log In" />
+
+    </RelativeLayout>

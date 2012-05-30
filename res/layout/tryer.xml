@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/top_control_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+         <Button
+             android:id="@+id/backbutton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Back" />
+
+         <TextView
+             android:id="@+id/textView1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+             android:layout_alignParentTop="true"
+             android:layout_toRightOf="@+id/backbutton"
+             android:gravity="center_horizontal"
+             android:text="Find Trucks"
+             android:textAppearance="?android:attr/textAppearanceLarge" />
+        
+    </RelativeLayout>
+   
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_control_bar" >
+    </ListView>
+    
+    <TextView 
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Empty list"
+        android:layout_below="@id/top_control_bar"
+        />
+    
+</RelativeLayout>

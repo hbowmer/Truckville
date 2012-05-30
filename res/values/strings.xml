@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="favorites_array">
+        <item>Favorite 1</item>
+        <item>Favortie 2</item>
+        <item>Favorite 3</item>
+        
+    </string-array>
+
+    <string name="hello">Hello World, FoodTrucksActivity!</string>
+    <string name="app_name">FoodTrucks</string>
+
+</resources>
