@@ -28,13 +28,17 @@ public class TrucksDB { //This class encapsulates data access to a SQLite databa
    private static final String DATABASE_NAME = "data"; //The database will have the name data with a single table
    private static final String DATABASE_TABLE_TRUCKS = "trucks"; //The table will have the name trucks
    private static final String DATABASE_TABLE_FAVORITES = "favorites";
-   private static final int DATABASE_VERSION = 1;
+   private static final String DATABASE_TABLE_BADGES = "badges";
+   private static final int DATABASE_VERSION = 3;
    
    private static final String TRUCKS_CREATE =
 		   " create table " + DATABASE_TABLE_TRUCKS +  " (_id integer primary key autoincrement, "
 			+ "title text not null, body text not null);";
    private static final String FAVORITES_CREATE =
 		   " create table " + DATABASE_TABLE_FAVORITES + " (_id integer primary key autoincrement,"
+		   + " title text not null, body text not null);";
+   private static final String BADGES_CREATE =
+		   " create table " + DATABASE_TABLE_BADGES + " (_id integer primary key autoincrement,"
 		   + " title text not null, body text not null);";
 
    
@@ -51,6 +55,7 @@ public class TrucksDB { //This class encapsulates data access to a SQLite databa
 		   
 		   db.execSQL(TRUCKS_CREATE);
 		   db.execSQL(FAVORITES_CREATE);
+		   db.execSQL(BADGES_CREATE);
 	   }
 	   
 	   @Override
@@ -107,6 +112,14 @@ public class TrucksDB { //This class encapsulates data access to a SQLite databa
 	   return mDb.insert(DATABASE_TABLE_TRUCKS, null, initialValues);
    }
    
+   public long createBadges (String title, String body) {
+	   ContentValues initialValues = new ContentValues();
+	   initialValues.put(KEY_TITLE, title);
+	   initialValues.put(KEY_BODY, body);
+	   
+	   return mDb.insert(DATABASE_TABLE_BADGES, null, initialValues);
+   }
+   
    /*
     * deleteNote() takes a "rowId" for a particular favorite, and deletes that favorite from the database.
     */
@@ -136,6 +149,12 @@ public class TrucksDB { //This class encapsulates data access to a SQLite databa
 	   return mDb.query(DATABASE_TABLE_TRUCKS, new String[] {KEY_ROWID, KEY_TITLE,
 			   KEY_BODY}, null, null, null, null, null);
    }
+   
+   public Cursor fetchAllBadges() {
+	   
+	   return mDb.query(DATABASE_TABLE_BADGES, new String[] {KEY_ROWID, KEY_TITLE,
+			   KEY_BODY}, null, null, null, null, null);
+	   }
    
    /*
     * fetchFavorite() is similar to fetchAllFavorites() but just gets one favorite with the rowID that is
@@ -172,6 +191,19 @@ public class TrucksDB { //This class encapsulates data access to a SQLite databa
 	   return mCursor;
    }
    
+   public Cursor fetchBadges(long rowId) throws SQLException {
+	   
+	   Cursor mCursor =
+			   
+			   mDb.query(true, DATABASE_TABLE_BADGES, new String[] {KEY_ROWID,
+					   KEY_TITLE, KEY_BODY}, KEY_ROWID + "=" + rowId, null,
+					   null, null, null, null);
+	   if (mCursor != null) {
+		   mCursor.moveToFirst();
+	   }
+	   return mCursor;
+   }
+   
    /*
     * updateFavorite() takes a rowId, title, and body, and uses a ContentValues instance to update the note 
     * of the given rowId.
@@ -191,5 +223,13 @@ public class TrucksDB { //This class encapsulates data access to a SQLite databa
 	   args.put(KEY_BODY, body);
 	   
 	   return mDb.update(DATABASE_TABLE_TRUCKS, args, KEY_ROWID + "=" + rowId, null) > 0;
+   }
+   
+   public boolean updateBadges(long rowId, String title, String body) {
+	   ContentValues args = new ContentValues();
+	   args.put(KEY_TITLE, title);
+	   args.put(KEY_BODY, body);
+	   
+	   return mDb.update(DATABASE_TABLE_BADGES, args, KEY_ROWID + "=" + rowId, null) > 0;
    }
 }

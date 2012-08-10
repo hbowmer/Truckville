@@ -5,18 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.NameValuePair;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -26,10 +21,10 @@ import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicHttpResponse;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
@@ -90,7 +85,7 @@ public class HTTPHelper {
 	public HTTPHelper(final Handler handler) {
 		mResponseHandler = HTTPHelper.getResponseHandlerInstance(handler);
 	}
-
+	
 	/**
 	 * Execute the specified HTTP method given a URL and parameters.
 	 * 
@@ -102,7 +97,7 @@ public class HTTPHelper {
 	 *            Request parameters
 	 */
 	public void performRequest(final String method, final String url,
-			final Map<String, String> params) {
+			final String post) {
 		Log.d(CLASS_NAME, "HTTP " + method + " request to url: " + url);
 		HttpUriRequest request = null;
 
@@ -112,17 +107,12 @@ public class HTTPHelper {
 			request = new HttpPost(url);
 			request.setHeader(HTTPHelper.CONTENT_TYPE,
 					HTTPHelper.MIME_FORM_ENCODED);
-			List<NameValuePair> nvps = null;
-			if ((params != null) && (params.size() > 0)) {
-				nvps = new ArrayList<NameValuePair>();
-				for (String key : params.keySet()) {
-					nvps.add(new BasicNameValuePair(key, params.get(key)));
-				}
-			}
-			if (nvps != null) {
+
+			if (post != null) {
 				try {
-					((HttpPost) request).setEntity(new UrlEncodedFormEntity(
-							nvps, HTTP.UTF_8));
+					((HttpPost) request).setEntity(new StringEntity(post, HTTP.UTF_8));
+					Log.i("REQUEST CHECK", request.toString());
+					
 				} catch (UnsupportedEncodingException e) {
 					Log.e(CLASS_NAME, e.getMessage());
 				}
@@ -136,7 +126,8 @@ public class HTTPHelper {
 		if (request != null) {
 			execute(request);
 		}
-	}
+	}	
+	
 
 	/**
 	 * Execute an HTTP request.

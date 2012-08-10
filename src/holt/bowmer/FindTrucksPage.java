@@ -1,13 +1,22 @@
 package holt.bowmer;
 
+import java.util.HashMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -19,9 +28,12 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.badgeville.helper.BVHelper;
+
 public class FindTrucksPage extends ListActivity
 {
 	FoodTrucksActivity ob;
+	SharedPreferences pref, user, badge;
 	private String Listname;
 	private TrucksDB mDbHelper;
 	private Cursor mNotesCursor;
@@ -42,6 +54,27 @@ public class FindTrucksPage extends ListActivity
 	private static final int DELETE_ID = Menu.FIRST + 1;
 	
 	final CharSequence[] items = {"Twitter", "Favorite", "Back"};
+			
+	
+	private final Handler mHandler = new Handler() {
+		public void handleMessage(final Message msg) {
+			String responseString = 
+					msg.getData().getString("RESPONSE");
+			try {
+				// Do something!
+				JSONObject responseJson = new JSONObject(responseString);
+				Log.i("RESPONSE JSON", responseJson.toString());
+				
+				finish();
+			} catch (JSONException je) {
+				// Handle!
+			}
+		}
+	};
+	
+	
+	BVHelper helper = new BVHelper("staging.badgeville.com",
+			"558fe29afda4e10a12ee71824dfd6033", mHandler);
 	
 	@Override
 		public void onCreate(Bundle savedInstanceState)
@@ -114,6 +147,28 @@ public class FindTrucksPage extends ListActivity
 		String favoriteName = Listname;
 		mDbHelper.createFavorite(favoriteName, "");
 		fillBaseData();
+		
+		pref = getSharedPreferences("Activities", MODE_PRIVATE);
+		user = getSharedPreferences(LoginPage.PREFS_NAME, MODE_PRIVATE);
+		badge = getSharedPreferences("Badges", MODE_PRIVATE);
+		
+		if (FoodTrucksActivity.playerId != null && pref.getBoolean(user.getString("username", null) + "Favorites", false) == false) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("activity[verb]", "favorite");
+		params.put("player_id", FoodTrucksActivity.playerId);
+		helper.create(BVHelper.ACTIVITIES, params);
+		
+		pref.edit()
+			.putBoolean(getSharedPreferences(LoginPage.PREFS_NAME, MODE_PRIVATE)
+			.getString("username", null) + "Favorites", true)
+			.commit();
+		
+		mDbHelper.createBadges("Favorite", "Favorite a food truck!");
+		fillBaseData();
+		
+		Toast.makeText(FindTrucksPage.this, "You earned the Favorites badge! +5 points",
+				Toast.LENGTH_LONG).show();
+		}
 	}
 	
 	private void createTrucks() {

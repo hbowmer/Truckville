@@ -30,22 +30,31 @@
         </RelativeLayout>
 
     <Button
-        android:id="@+id/logoutbutton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:onClick="logout"
-        android:text="Log Out" />
-
-    <Button
         android:id="@+id/loginbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/top_control_bar"
+        android:layout_marginTop="50dp"
         android:text="Log In" />
+
+    <Button
+        android:id="@+id/logoutbutton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/loginbutton"
+        android:layout_marginTop="50dp"
+        android:onClick="logout"
+        android:text="Log Out" />
+
+    <Button
+        android:id="@+id/newaccount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Create Account" />
 
     </RelativeLayout>

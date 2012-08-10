@@ -85,6 +85,11 @@
             android:label="Trucks"
             android:screenOrientation="portrait" >
         </activity>
+        <activity 
+            android:name=".NewAccount"
+            android:label="New Account"
+            android:screenOrientation="portrait" >
+        </activity>
         
     </application>
 

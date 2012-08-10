@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * Helper class for invoking Badgeville REST APIs.
@@ -15,12 +16,16 @@ public class BVHelper {
 
 	public static final String ACTIVITIES = "activities";
 	public static final String ACTIVITY_DEFINITIONS = "activity_definitions";
-	public static final String MISSIONS = "groups";
 	public static final String LEADERBOARDS = "leaderboards";
+	public static final String MISSIONS = "groups";
 	public static final String PLAYERS = "players";
 	public static final String REWARDS = "rewards";
 	public static final String REWARD_DEFINTIONS = "reward_definitions";
+	public static final String SITE_CONTENTS = "site_contents";
 	public static final String SITES = "sites";
+	public static final String TEAMS = "teams";
+	public static final String TRACKS = "tracks";
+	public static final String UNITS = "units";
 	public static final String USERS = "users";
 
 	/**
@@ -61,7 +66,24 @@ public class BVHelper {
 	 */
 	public void create(String objectName, Map<String, String> params) {
 		String url = mUrlBase + objectName + ".json";
-		mHttpHelper.performRequest(HTTPHelper.METHOD_POST, url, params);
+		
+		StringBuffer paramBuf = new StringBuffer();
+		if (params != null && params.size() > 0) {
+			Iterator<Map.Entry<String, String>> iter = params.entrySet()
+					.iterator();
+			while (iter.hasNext()) {
+				Map.Entry<String, String> param = (Map.Entry<String, String>) iter
+						.next();
+				paramBuf.append(param.getKey() + "=" + param.getValue());
+				if (iter.hasNext()) {
+					paramBuf.append('&');
+				}
+			}
+		}
+		Log.i("PARAM STRING CHECK", paramBuf.toString());
+		String post = paramBuf.toString();
+		
+		mHttpHelper.performRequest(HTTPHelper.METHOD_POST, url, post);
 	}
 
 	/**
@@ -95,8 +117,9 @@ public class BVHelper {
 	 */
 	public void update(String objectName, String objectId,
 			Map<String, String> params) {
-		String url = mUrlBase + objectName + "/" + objectId + ".json";
-		mHttpHelper.performRequest(HTTPHelper.METHOD_PUT, url, params);
+		String url = mUrlBase + objectName + "/" + objectId + ".json"
+				+ buildParamString(params);
+		mHttpHelper.performRequest(HTTPHelper.METHOD_PUT, url, null);
 	}
 
 	/**
@@ -135,6 +158,7 @@ public class BVHelper {
 				}
 			}
 		}
+		Log.i("PARAM STRING CHECK", paramBuf.toString());
 		return paramBuf.toString();
 	}
 
